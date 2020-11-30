@@ -2,14 +2,15 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/main_background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/main_background"
-        tools:context=".MovieDetailsActivity">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/orig"
@@ -29,6 +30,17 @@
             android:src="@drawable/ic_baseline_arrow_back_ios_24"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/fragment_movie_details_back_back_text"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:paddingStart="14dp"
+            android:text="@string/back"
+            android:textColor="@color/text_white_transparent"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/back_image"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
         <ImageView
             android:id="@+id/star_1"
@@ -147,7 +159,7 @@
             app:layout_constraintTop_toTopOf="@id/age_raiting" />
 
         <TextView
-            android:id="@+id/tag_line"
+            android:id="@+id/movies_list_item_tag_line"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginTop="338dp"
@@ -157,17 +169,6 @@
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/back_text"
-            android:layout_width="wrap_content"
-            android:layout_height="17dp"
-            android:layout_marginStart="14dp"
-            android:text="@string/back"
-            android:textColor="@color/text_white_transparent"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/back_image"
-            app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
         <TextView
             android:id="@+id/reviews"
