@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:background="@color/main_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <ImageView
+            android:id="@+id/movies_detail_actor_item_photo"
+            android:layout_width="85dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="12dp"
+            tool:src="@drawable/actor_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="1:1"/>
+
+    <TextView
+        android:id="@+id/movies_detail_actor_item_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Robert Downey Jr."
+        android:textColor="@color/text_light_grey_2"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/movies_detail_actor_item_photo"
+        app:layout_constraintStart_toStartOf="@+id/movies_detail_actor_item_photo"
+        app:layout_constraintTop_toBottomOf="@id/movies_detail_actor_item_photo" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
