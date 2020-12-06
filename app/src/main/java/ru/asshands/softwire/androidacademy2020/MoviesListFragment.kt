@@ -1,14 +1,12 @@
 package ru.asshands.softwire.androidacademy2020
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import ru.asshands.softwire.androidacademy2020.adapters.MoviesListAdapter
 import ru.asshands.softwire.androidacademy2020.adapters.OnRecyclerItemMovieClicked
 import ru.asshands.softwire.androidacademy2020.databinding.FragmentMoviesListBinding
 import ru.asshands.softwire.androidacademy2020.domain.MoviesDataSource
-import ru.asshands.softwire.androidacademy2020.models.Actor
 import ru.asshands.softwire.androidacademy2020.models.Movie
 
 class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
@@ -28,9 +26,7 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
 
     override fun onStart() {
         super.onStart()
-
-        adapter.bindData(MoviesDataSource(requireContext()).getMovies())
-        adapter.notifyDataSetChanged()
+        adapter.bindData(MoviesDataSource().getMovies())
     }
 
     override fun onDestroyView() {

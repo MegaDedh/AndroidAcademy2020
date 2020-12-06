@@ -14,7 +14,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     companion object {
 
-        @JvmStatic
         fun newInstance(movieId: Long) = MovieDetailsFragment().apply {
             arguments = Bundle().apply {
                 putLong("MOVIE_ID", movieId)
@@ -33,35 +32,35 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         _bind = FragmentMovieDetailsBinding.bind(view)
 
         movieId = requireArguments().getLong("MOVIE_ID")
-        val moviesList = MoviesDataSource(requireContext()).getMovies()
+        val moviesList = MoviesDataSource().getMovies()
         movie = moviesList.firstOrNull { it.id == movieId }
 
         // (!) callback way
-        adapter = MoviesDetailsActorAdapter{
+        adapter = MoviesDetailsActorAdapter {
             showSnackBarActor(it)
         }
         val recyclerView = bind.fragmentMovieDetailsActorRecycler
         recyclerView.adapter = adapter
 
         val reviewsTemplate = requireContext().getString(R.string.reviews, movie?.reviews)
-        bind.reviews.text = reviewsTemplate
-        bind.fragmentMovieDetailsAgeRating.text = movie?.ageRating
-        bind.fragmentMovieDetailsTitle.text = movie?.title
-        bind.fragmentMovieDetailsTitleGenreTags.text = movie?.genreTags
-        bind.storyLine.text = movie?.storyline
         movie?.rating?.let { setRating(bind, it) }
 
-        bind.fragmentMovieDetailsBackBackText.setOnClickListener {
-            requireActivity().supportFragmentManager
-                .popBackStack()
+        bind.apply {
+            reviews.text = reviewsTemplate
+            fragmentMovieDetailsAgeRating.text = movie?.ageRating
+            fragmentMovieDetailsTitle.text = movie?.title
+            fragmentMovieDetailsTitleGenreTags.text = movie?.genreTags
+            storyLine.text = movie?.storyline
+            fragmentMovieDetailsBackBackText.setOnClickListener {
+                requireActivity().supportFragmentManager
+                    .popBackStack()
+            }
         }
     }
 
     override fun onStart() {
         super.onStart()
-
         movie?.actors?.let { adapter.bindData(it) }
-        adapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
@@ -83,11 +82,11 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         if (rating >= 5) star5.setImageResource(R.drawable.star_icon_red)
     }
 
-        private fun showSnackBarActor(actor: Actor) {
-            Snackbar.make(
-                bind.fragmentMovieDetailsActorRecycler,
-                actor.name,
-                Snackbar.LENGTH_SHORT
-            ).show()
-        }
+    private fun showSnackBarActor(actor: Actor) {
+        Snackbar.make(
+            bind.fragmentMovieDetailsActorRecycler,
+            actor.name,
+            Snackbar.LENGTH_SHORT
+        ).show()
+    }
 }

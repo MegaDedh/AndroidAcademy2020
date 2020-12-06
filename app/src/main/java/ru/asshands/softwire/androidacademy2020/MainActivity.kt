@@ -2,7 +2,6 @@ package ru.asshands.softwire.androidacademy2020
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import ru.asshands.softwire.androidacademy2020.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

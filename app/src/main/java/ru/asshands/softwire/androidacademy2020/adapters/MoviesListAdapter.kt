@@ -1,7 +1,6 @@
 package ru.asshands.softwire.androidacademy2020.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.asshands.softwire.androidacademy2020.R
@@ -11,16 +10,13 @@ import ru.asshands.softwire.androidacademy2020.models.Movie
 class MoviesListAdapter(private val clickListener: OnRecyclerItemMovieClicked) :
     RecyclerView.Adapter<MoviesListAdapter.ViewHolder>() {
 
-    //  private var _bind: MoviesListItemBinding? = null
-    //  private val bind get() = _bind!!
+    private var _bind: MoviesListItemBinding? = null
+    private val bind get() = _bind!!
     private var list: List<Movie> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.movies_list_item, parent, false)
-        // _bind = MoviesListItemBinding.bind(view)
-        return ViewHolder(view)
+        _bind = MoviesListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(bind)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -37,26 +33,25 @@ class MoviesListAdapter(private val clickListener: OnRecyclerItemMovieClicked) :
 
     fun bindData(newList: List<Movie>) {
         list = newList
+        notifyDataSetChanged()
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        private val bind = MoviesListItemBinding.bind(itemView)
+    class ViewHolder(private val bind: MoviesListItemBinding) : RecyclerView.ViewHolder(bind.root) {
         fun bindView(item: Movie) {
 
             val reviewsTemplate = itemView.context.getString(R.string.reviews, item.reviews)
             val runningTimeTemplate =
                 itemView.context.getString(R.string.running_time, item.runningTime)
-            bind.moviesListItemTitle.text = item.title
-            bind.moviesListItemGenreTags.text = item.genreTags
-            bind.moviesListItemReviews.text = reviewsTemplate
-            bind.moviesListItemRunningTime.text = runningTimeTemplate
-            bind.moviesListAgeRaiting.text = item.ageRating
-            bind.moviesListItemPoster.setImageDrawable(item.posterResource)
+            bind.apply {
+                moviesListItemTitle.text = item.title
+                moviesListItemGenreTags.text = item.genreTags
+                moviesListItemReviews.text = reviewsTemplate
+                moviesListItemRunningTime.text = runningTimeTemplate
+                moviesListAgeRaiting.text = item.ageRating
+                moviesListItemPoster.setImageResource(item.posterResource)
+            }
             if (item.favorite) bind.moviesListItemFavorite.setImageResource(R.drawable.favorite_active)
             setRating(bind, item.rating)
-
-
         }
 
         private fun setRating(bind: MoviesListItemBinding, rating: Int) {
