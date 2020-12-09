@@ -13,10 +13,12 @@ class MainActivity : AppCompatActivity() {
         bind = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bind.root)
 
-        supportFragmentManager
-            .beginTransaction()
-            .add(R.id.activity_main_frame_layout, MoviesListFragment())
-            .commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.activity_main_frame_layout, MoviesListFragment())
+                .commit()
+        }
     }
 
 }
