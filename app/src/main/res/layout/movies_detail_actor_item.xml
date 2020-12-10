@@ -13,6 +13,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="12dp"
             tool:src="@drawable/actor_1"
+            android:scaleType="matrix"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintDimensionRatio="1:1"/>
