@@ -80,6 +80,7 @@ class MoviesListAdapter(
 
             setRating(bind, (item.ratings / 2).toInt())
             if (favorite) bind.itemFavorite.setImageResource(R.drawable.favorite_active)
+            else bind.itemFavorite.setImageResource(R.drawable.favorite_gray)
         }
 
         private fun setRating(bind: MoviesListItemBinding, rating: Int) {
