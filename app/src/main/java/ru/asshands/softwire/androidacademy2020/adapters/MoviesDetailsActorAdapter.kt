@@ -3,8 +3,10 @@ package ru.asshands.softwire.androidacademy2020.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.asshands.softwire.androidacademy2020.data.Actor
 import ru.asshands.softwire.androidacademy2020.databinding.MoviesDetailActorItemBinding
-import ru.asshands.softwire.androidacademy2020.models.Actor
+import ru.asshands.softwire.androidacademy2020.loadImage
+
 
 // (!) callback way
 class MoviesDetailsActorAdapter(private val clickListener: (Actor) -> Unit) :
@@ -42,7 +44,7 @@ class MoviesDetailsActorAdapter(private val clickListener: (Actor) -> Unit) :
         RecyclerView.ViewHolder(bind.root) {
 
         fun bindView(item: Actor) {
-            bind.moviesDetailActorItemPhoto.setImageResource(item.posterResource)
+            bind.moviesDetailActorItemPhoto.loadImage(item.picture)
             bind.moviesDetailActorItemName.text = item.name
         }
     }

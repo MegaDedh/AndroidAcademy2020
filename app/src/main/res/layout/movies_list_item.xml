@@ -2,27 +2,38 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/movies_list_item_card"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    app:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/main_background">
 
         <ImageView
-            android:id="@+id/movies_list_item_poster"
+            android:id="@+id/item_poster"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/poster_1"
+            android:layout_height="250dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/poster_1" />
+
+        <ImageView
+            android:id="@+id/item_poster_mask"
+            android:layout_width="wrap_content"
+            android:layout_height="254dp"
+            android:src="@drawable/mask_poster"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/movies_list_age_raiting"
+            android:id="@+id/item_age_raiting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -35,16 +46,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/movies_list_item_favorite"
+            android:id="@+id/item_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+
             android:src="@drawable/favorite_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/movies_list_item_genre_tags"
+            android:id="@+id/item_genre_tags"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
             android:layout_marginStart="6dp"
@@ -52,55 +64,55 @@
             android:text="Action, Adventure, Drame"
             android:textColor="@color/text_red_tag_line"
             android:textSize="8sp"
-            app:layout_constraintBottom_toBottomOf="@+id/movies_list_item_poster"
+            app:layout_constraintBottom_toBottomOf="@+id/item_poster"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:id="@+id/movies_list_item_star_1"
+            android:id="@+id/item_star_1"
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:src="@drawable/star_icon"
-            app:layout_constraintStart_toStartOf="@+id/movies_list_item_genre_tags"
-            app:layout_constraintTop_toBottomOf="@id/movies_list_item_genre_tags" />
+            app:layout_constraintStart_toStartOf="@+id/item_genre_tags"
+            app:layout_constraintTop_toBottomOf="@id/item_genre_tags" />
 
         <ImageView
-            android:id="@+id/movies_list_item_star_2"
+            android:id="@+id/item_star_2"
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:layout_marginStart="2dp"
             android:src="@drawable/star_icon"
-            app:layout_constraintStart_toEndOf="@+id/movies_list_item_star_1"
-            app:layout_constraintTop_toTopOf="@+id/movies_list_item_star_1" />
+            app:layout_constraintStart_toEndOf="@+id/item_star_1"
+            app:layout_constraintTop_toTopOf="@+id/item_star_1" />
 
         <ImageView
-            android:id="@+id/movies_list_item_star_3"
+            android:id="@+id/item_star_3"
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:layout_marginStart="2dp"
             android:src="@drawable/star_icon"
-            app:layout_constraintStart_toEndOf="@+id/movies_list_item_star_2"
-            app:layout_constraintTop_toTopOf="@+id/movies_list_item_star_2" />
+            app:layout_constraintStart_toEndOf="@+id/item_star_2"
+            app:layout_constraintTop_toTopOf="@+id/item_star_2" />
 
         <ImageView
-            android:id="@+id/movies_list_item_star_4"
+            android:id="@+id/item_star_4"
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:layout_marginStart="2dp"
             android:src="@drawable/star_icon"
-            app:layout_constraintStart_toEndOf="@+id/movies_list_item_star_3"
-            app:layout_constraintTop_toTopOf="@+id/movies_list_item_star_3" />
+            app:layout_constraintStart_toEndOf="@+id/item_star_3"
+            app:layout_constraintTop_toTopOf="@+id/item_star_3" />
 
         <ImageView
-            android:id="@+id/movies_list_item_star_5"
+            android:id="@+id/item_star_5"
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:layout_marginStart="2dp"
             android:src="@drawable/star_icon"
-            app:layout_constraintStart_toEndOf="@+id/movies_list_item_star_4"
-            app:layout_constraintTop_toTopOf="@+id/movies_list_item_star_4" />
+            app:layout_constraintStart_toEndOf="@+id/item_star_4"
+            app:layout_constraintTop_toTopOf="@+id/item_star_4" />
 
         <TextView
-            android:id="@+id/movies_list_item_reviews"
+            android:id="@+id/item_reviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -108,23 +120,24 @@
             android:textColor="@color/text_grey"
             android:textSize="8sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/movies_list_item_star_1"
-            app:layout_constraintStart_toEndOf="@+id/movies_list_item_star_5"
-            app:layout_constraintTop_toTopOf="@+id/movies_list_item_star_1" />
+            app:layout_constraintBottom_toBottomOf="@+id/item_star_1"
+            app:layout_constraintStart_toEndOf="@+id/item_star_5"
+            app:layout_constraintTop_toTopOf="@+id/item_star_1" />
 
         <TextView
-            android:id="@+id/movies_list_item_title"
+            android:id="@+id/item_movie_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="left"
             android:lineSpacingMultiplier="0.85"
+            android:paddingBottom="12dp"
             android:text="Avengers: End Game"
             android:textColor="@color/text_light_grey"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/movies_list_item_star_1"
-            app:layout_constraintTop_toBottomOf="@id/movies_list_item_poster" />
+            app:layout_constraintStart_toStartOf="@id/item_star_1"
+            app:layout_constraintTop_toBottomOf="@id/item_poster" />
 
         <TextView
             android:id="@+id/movies_list_item_running_time"
@@ -134,8 +147,8 @@
             android:textColor="@color/text_grey"
             android:textSize="8sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/movies_list_item_star_1"
-            app:layout_constraintTop_toBottomOf="@+id/movies_list_item_title" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/item_star_1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

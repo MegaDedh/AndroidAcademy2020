@@ -1,61 +1,70 @@
 package ru.asshands.softwire.androidacademy2020
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import ru.asshands.softwire.androidacademy2020.adapters.MoviesDetailsActorAdapter
+import ru.asshands.softwire.androidacademy2020.data.Actor
+import ru.asshands.softwire.androidacademy2020.data.Movie
 import ru.asshands.softwire.androidacademy2020.databinding.FragmentMovieDetailsBinding
-import ru.asshands.softwire.androidacademy2020.domain.MoviesDataSource
-import ru.asshands.softwire.androidacademy2020.models.Actor
-import ru.asshands.softwire.androidacademy2020.models.Movie
+import ru.asshands.softwire.androidacademy2020.utils.KEY_MOVIE
+
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     companion object {
 
-        fun newInstance(movieId: Long) = MovieDetailsFragment().apply {
+        fun newInstance(movie: Movie) = MovieDetailsFragment().apply {
             arguments = Bundle().apply {
-                putLong("MOVIE_ID", movieId)
+                putParcelable(KEY_MOVIE, movie)
             }
         }
     }
 
     private var _bind: FragmentMovieDetailsBinding? = null
     private val bind get() = _bind!!
-    private var movieId: Long = 0
     private var movie: Movie? = null
     private lateinit var adapter: MoviesDetailsActorAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _bind = FragmentMovieDetailsBinding.bind(view)
-
-        movieId = requireArguments().getLong("MOVIE_ID")
-        val moviesList = MoviesDataSource().getMovies()
-        movie = moviesList.firstOrNull { it.id == movieId }
+        movie = requireArguments().getParcelable(KEY_MOVIE)
 
         // (!) callback way
         adapter = MoviesDetailsActorAdapter {
             showSnackBarActor(it)
         }
-        val recyclerView = bind.fragmentMovieDetailsActorRecycler
+        val recyclerView = bind.actorRecycler
         recyclerView.adapter = adapter
 
-        val reviewsTemplate = requireContext().getString(R.string.reviews, movie?.reviews)
-        movie?.rating?.let { setRating(bind, it) }
+        if (movie?.actors.isNullOrEmpty()) {
+            bind.actorRecycler.visibility = View.INVISIBLE
+            bind.cast.visibility = View.INVISIBLE
+        }
+
+
+        val reviewsTemplate = requireContext().getString(R.string.reviews, movie?.numberOfRatings)
+        val ageRatingTemplate = requireContext().getString(R.string.age_rating, movie?.minimumAge)
 
         bind.apply {
+            movieTitle.text = movie?.title
             reviews.text = reviewsTemplate
-            fragmentMovieDetailsAgeRating.text = movie?.ageRating
-            fragmentMovieDetailsTitle.text = movie?.title
-            fragmentMovieDetailsTitleGenreTags.text = movie?.genreTags
-            storyLine.text = movie?.storyline
-            fragmentMovieDetailsBackBackText.setOnClickListener {
+            ageRating.text = ageRatingTemplate
+            genreTags.text = movie?.genres?.map { it.name }.toString()
+            overview.text = movie?.overview
+
+            backText.setOnClickListener {
                 requireActivity().supportFragmentManager
                     .popBackStack()
             }
         }
+
+        movie?.backdrop?.let { bind.backdrop.loadImage(it) }
+        (movie?.ratings?.div(2))?.let { setRating(bind, it.toInt()) }
+
     }
 
     override fun onStart() {
@@ -84,9 +93,10 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     private fun showSnackBarActor(actor: Actor) {
         Snackbar.make(
-            bind.fragmentMovieDetailsActorRecycler,
+            bind.actorRecycler,
             actor.name,
             Snackbar.LENGTH_SHORT
         ).show()
     }
+
 }
