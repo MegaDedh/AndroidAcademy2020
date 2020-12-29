@@ -1,4 +1,4 @@
-package ru.asshands.softwire.androidacademy2020.adapters
+package ru.asshands.softwire.androidacademy2020.ui.moviedetails
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

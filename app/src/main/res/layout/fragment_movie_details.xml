@@ -184,7 +184,7 @@
             app:layout_constraintTop_toBottomOf="@+id/overview" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/actor_recycler"
+            android:id="@+id/actor_recycler_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
