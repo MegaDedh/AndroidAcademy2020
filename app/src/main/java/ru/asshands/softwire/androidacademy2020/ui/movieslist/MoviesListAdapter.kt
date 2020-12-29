@@ -52,7 +52,6 @@ class MoviesListAdapter(
 
         fun bindView(item: Movie) {
             val ctx = itemView.context
-
             val reviewsTemplate = ctx.getString(R.string.reviews, item.numberOfRatings)
             val ageRatingTemplate = ctx.getString(R.string.age_rating, item.minimumAge)
             val runTimeTemplate = ctx.getString(R.string.running_time, item.runtime)
