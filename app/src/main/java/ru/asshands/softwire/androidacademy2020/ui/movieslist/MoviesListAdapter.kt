@@ -4,13 +4,11 @@ import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import ru.asshands.softwire.androidacademy2020.R
 import ru.asshands.softwire.androidacademy2020.data.Movie
 import ru.asshands.softwire.androidacademy2020.databinding.MoviesListItemBinding
-import ru.asshands.softwire.androidacademy2020.loadImage
+import ru.asshands.softwire.androidacademy2020.utils.loadImage
 
 
 class MoviesListAdapter(
@@ -52,27 +50,26 @@ class MoviesListAdapter(
 
         fun bindView(item: Movie) {
             val ctx = itemView.context
-
             val reviewsTemplate = ctx.getString(R.string.reviews, item.numberOfRatings)
             val ageRatingTemplate = ctx.getString(R.string.age_rating, item.minimumAge)
             val runTimeTemplate = ctx.getString(R.string.running_time, item.runtime)
-            var favorite = loadFavorite(item.id)
+            var favorite = loadFavorite(item.id.toInt())
 
             bind.apply {
                 itemMovieTitle.text = item.title
                 itemReviews.text = reviewsTemplate
                 itemAgeRaiting.text = ageRatingTemplate
-                moviesListItemRunningTime.text = runTimeTemplate
+                //moviesListItemRunningTime.text = runTimeTemplate
                 itemGenreTags.text = item.genres.map { it.name }.toString()
                 itemPoster.loadImage(item.poster)
                 itemFavorite.setOnClickListener {
                     if (favorite) {
                         favorite = false
-                        saveFavorite(item.id, favorite)
+                        saveFavorite(item.id.toInt(), favorite)
                         itemFavorite.setImageResource(R.drawable.favorite_gray)
                     } else {
                         favorite = true
-                        saveFavorite(item.id, favorite)
+                        saveFavorite(item.id.toInt(), favorite)
                         itemFavorite.setImageResource(R.drawable.favorite_active)
                     }
                 }
