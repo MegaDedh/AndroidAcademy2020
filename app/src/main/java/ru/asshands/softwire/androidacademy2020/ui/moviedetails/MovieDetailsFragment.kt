@@ -1,6 +1,7 @@
 package ru.asshands.softwire.androidacademy2020.ui.moviedetails
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -9,7 +10,9 @@ import ru.asshands.softwire.androidacademy2020.R
 import ru.asshands.softwire.androidacademy2020.data.Actor
 import ru.asshands.softwire.androidacademy2020.data.Movie
 import ru.asshands.softwire.androidacademy2020.databinding.FragmentMovieDetailsBinding
-import ru.asshands.softwire.androidacademy2020.loadImage
+import ru.asshands.softwire.androidacademy2020.models.MovieCredits
+import ru.asshands.softwire.androidacademy2020.models.MovieDetails
+import ru.asshands.softwire.androidacademy2020.utils.loadImage
 
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
@@ -23,7 +26,11 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         super.onViewCreated(view, savedInstanceState)
         _bind = FragmentMovieDetailsBinding.bind(view)
 
-        viewModel.moviesList.observe(this.viewLifecycleOwner, this::setUiElements)
+        //viewModel.moviesList.observe(this.viewLifecycleOwner, this::setUiElements)
+        viewModel.movieDetails.observe(this.viewLifecycleOwner, this::setUiElements)
+        viewModel.movieCredits.observe(this.viewLifecycleOwner, this::getMovieCredits)
+
+        viewModel.loadMovieDetails()
         setActorRecyclerView()
     }
 
@@ -33,6 +40,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
 
     private fun setUiElements(movie: Movie) {
+
         if (movie.actors.isNullOrEmpty()) {
             bind.actorRecyclerView.visibility = View.INVISIBLE
             bind.cast.visibility = View.INVISIBLE
@@ -47,7 +55,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             movieTitle.text = movie.title
             reviews.text = reviewsTemplate
             ageRating.text = ageRatingTemplate
-            genreTags.text = movie.genres.map { it.name }.toString()
+            genreTags.text = movie.genres.joinToString(separator = ", ") { it.name }
             overview.text = movie.overview
 
             backText.setOnClickListener {
@@ -89,5 +97,13 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             actor.name,
             Snackbar.LENGTH_SHORT
         ).show()
+    }
+
+    private fun getMovieDetails(movieDetails: MovieDetails) {
+        Log.d("REZ-MovieDetails", movieDetails.toString())
+    }
+
+    private fun getMovieCredits(movieCredits: MovieCredits) {
+        Log.d("REZ-MovieCredits", movieCredits.toString())
     }
 }

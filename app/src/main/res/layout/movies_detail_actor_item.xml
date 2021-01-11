@@ -16,19 +16,19 @@
             android:scaleType="matrix"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintDimensionRatio="1:1"/>
+            app:layout_constraintDimensionRatio="1:1.5"/>
 
     <TextView
         android:id="@+id/movies_detail_actor_item_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="132dp"
         android:text="Robert Downey Jr."
         android:textColor="@color/text_light_grey_2"
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/movies_detail_actor_item_photo"
         app:layout_constraintStart_toStartOf="@+id/movies_detail_actor_item_photo"
-        app:layout_constraintTop_toBottomOf="@id/movies_detail_actor_item_photo" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

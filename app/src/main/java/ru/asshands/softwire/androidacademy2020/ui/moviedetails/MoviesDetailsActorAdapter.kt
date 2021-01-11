@@ -1,11 +1,13 @@
 package ru.asshands.softwire.androidacademy2020.ui.moviedetails
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.asshands.softwire.androidacademy2020.R
 import ru.asshands.softwire.androidacademy2020.data.Actor
 import ru.asshands.softwire.androidacademy2020.databinding.MoviesDetailActorItemBinding
-import ru.asshands.softwire.androidacademy2020.loadImage
+import ru.asshands.softwire.androidacademy2020.utils.loadImage
 
 
 // (!) callback way
@@ -44,7 +46,14 @@ class MoviesDetailsActorAdapter(private val clickListener: (Actor) -> Unit) :
         RecyclerView.ViewHolder(bind.root) {
 
         fun bindView(item: Actor) {
-            bind.moviesDetailActorItemPhoto.loadImage(item.picture)
+            if (item.picture !== null) {
+                Log.d("WTF","${item.name} = ${item.picture}")
+                bind.moviesDetailActorItemPhoto.loadImage(item.picture)
+            } else {
+                Log.d("WTF","${item.name} = ${item.picture}")
+                bind.moviesDetailActorItemPhoto.setImageResource(R.drawable.ic_baseline_broken_image_24)
+            }
+            // item.picture?.let { bind.moviesDetailActorItemPhoto.loadImage(it) }
             bind.moviesDetailActorItemName.text = item.name
         }
     }
