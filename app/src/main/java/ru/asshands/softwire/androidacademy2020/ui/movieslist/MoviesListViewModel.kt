@@ -11,12 +11,13 @@ import ru.asshands.softwire.androidacademy2020.network.models.MovieDbConfig
 import ru.asshands.softwire.androidacademy2020.network.models.NowPlaying
 import ru.asshands.softwire.androidacademy2020.persistency.PersistencyRepository
 import ru.asshands.softwire.androidacademy2020.network.services.RetrofitModule
+import ru.asshands.softwire.androidacademy2020.utils.buildMoviesList
 import ru.asshands.softwire.androidacademy2020.utils.toLog
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class MoviesListViewModel(
-    private val persistencyRepository: PersistencyRepository
+    private val persistencyRepository: PersistencyRepository,
 ) : ViewModel() {
 
     private var genresMap = mapOf<Int, String>()
@@ -52,9 +53,11 @@ class MoviesListViewModel(
 
             if (mutableMovieDbConfig.value == null) loadMovieDbConfig()
             val nowPlaying = loadNowPlayingRaw()
-            val moviesList = convertMoviesList(nowPlaying)
 
-            if (moviesList.isNotEmpty()) {
+            val moviesList =
+                mutableMovieDbConfig.value?.let { buildMoviesList(nowPlaying, genresMap, it) }
+
+            if (moviesList !== null) {
                 mutableNowPlaying.value = moviesList
                 Log.d("XXXX", "loadNowPlayingRaw and setFreshMovies")
                 dbClearAll()
@@ -111,7 +114,7 @@ class MoviesListViewModel(
             .toMap()
     }
 
-    private fun convertMoviesList(nowPlaying: NowPlaying): List<Movie> {
+/*    private fun convertMoviesList(nowPlaying: NowPlaying): List<Movie> {
         val moviesList = mutableListOf<Movie>()
 
         nowPlaying.results.forEach {
@@ -142,7 +145,7 @@ class MoviesListViewModel(
                 )
         }
         return moviesList
-    }
+    }*/
 
 //    //TODO перенести "избранное" из MoviesDetailsActorAdapter
 //    fun saveFavorite(movieId: Int, favorite: Boolean) {

@@ -3,8 +3,10 @@ package ru.asshands.softwire.androidacademy2020.ui.moviedetails
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContentProviderCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.work.WorkManager
 import com.google.android.material.snackbar.Snackbar
 import ru.asshands.softwire.androidacademy2020.R
 import ru.asshands.softwire.androidacademy2020.data.Actor
@@ -31,6 +33,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
         viewModel.loadMovieDetails()
         setActorRecyclerView()
+
     }
 
     override fun onDestroyView() {

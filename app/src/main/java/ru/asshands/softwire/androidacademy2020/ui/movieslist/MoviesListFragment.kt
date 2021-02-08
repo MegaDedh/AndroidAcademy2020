@@ -7,6 +7,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.work.WorkManager
 import ru.asshands.softwire.androidacademy2020.ui.moviedetails.MovieDetailsFragment
 import ru.asshands.softwire.androidacademy2020.R
 import ru.asshands.softwire.androidacademy2020.data.Movie
@@ -22,7 +23,7 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
     }
     private val viewModelMovieDetails: MovieDetailsViewModel by activityViewModels()
 
-
+    private val workRepository = WorkRepository()
     private var _bind: FragmentMoviesListBinding? = null
     private val bind get() = _bind!!
     private lateinit var adapter: MoviesListAdapter
@@ -34,6 +35,8 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
         initMoviesListAdapter()
         viewModel.movieDbConfig.observe(this.viewLifecycleOwner, this::getMovieDbConfig)
         viewModel.nowPlaying.observe(this.viewLifecycleOwner, this::getNowPlaying)
+
+        WorkManager.getInstance(requireContext()).enqueue(workRepository.constrainedRequest)
     }
 
     override fun onStart() {

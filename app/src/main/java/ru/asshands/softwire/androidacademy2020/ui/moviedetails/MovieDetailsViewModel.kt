@@ -38,6 +38,7 @@ class MovieDetailsViewModel : ViewModel() {
     private val mutableMovieCredits = MutableLiveData<MovieCredits>()
     val movieCredits: LiveData<MovieCredits> get() = mutableMovieCredits
 
+
     fun setMovie(value: Movie) {
         mutableMovie.value = value
         movieId = value.movieId.toInt()
