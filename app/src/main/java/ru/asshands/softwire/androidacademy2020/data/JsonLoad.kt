@@ -89,7 +89,7 @@ internal fun parseMovies(
     return jsonMovies.map { jsonMovie ->
         @Suppress("unused")
         (Movie(
-        id = jsonMovie.id.toLong(),
+        movieId = jsonMovie.id.toLong(),
         title = jsonMovie.title,
         overview = jsonMovie.overview,
         poster = jsonMovie.posterPicture,

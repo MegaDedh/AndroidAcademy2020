@@ -1,9 +1,8 @@
-package ru.asshands.softwire.androidacademy2020.services
+package ru.asshands.softwire.androidacademy2020.network.services
 
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
-import ru.asshands.softwire.androidacademy2020.models.*
+import ru.asshands.softwire.androidacademy2020.network.models.*
 
 interface MovieDbApi {
 

@@ -9,20 +9,17 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import ru.asshands.softwire.androidacademy2020.ui.moviedetails.MovieDetailsFragment
 import ru.asshands.softwire.androidacademy2020.R
-import ru.asshands.softwire.androidacademy2020.adapters.MoviesListAdapter
-import ru.asshands.softwire.androidacademy2020.adapters.OnRecyclerItemMovieClicked
 import ru.asshands.softwire.androidacademy2020.data.Movie
 import ru.asshands.softwire.androidacademy2020.databinding.FragmentMoviesListBinding
-import ru.asshands.softwire.androidacademy2020.models.MovieCredits
-import ru.asshands.softwire.androidacademy2020.models.MovieDbConfig
-import ru.asshands.softwire.androidacademy2020.models.MovieDetails
-import ru.asshands.softwire.androidacademy2020.models.NowPlaying
+import ru.asshands.softwire.androidacademy2020.network.models.MovieDbConfig
 import ru.asshands.softwire.androidacademy2020.ui.moviedetails.MovieDetailsViewModel
 
 
 class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
 
-    private val viewModel: MoviesListViewModel by viewModels()
+    private val viewModel: MoviesListViewModel by viewModels {
+        MoviesListViewModelFactory(requireContext().applicationContext)
+    }
     private val viewModelMovieDetails: MovieDetailsViewModel by activityViewModels()
 
 
@@ -35,14 +32,13 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
 
         _bind = FragmentMoviesListBinding.bind(view)
         initMoviesListAdapter()
-        //viewModel.moviesList.observe(this.viewLifecycleOwner, this::setMoviesListAdapter)
         viewModel.movieDbConfig.observe(this.viewLifecycleOwner, this::getMovieDbConfig)
         viewModel.nowPlaying.observe(this.viewLifecycleOwner, this::getNowPlaying)
     }
 
     override fun onStart() {
         super.onStart()
-        viewModel.loadMovieDbConfig()
+        //viewModel.loadMovieDbConfig()
         viewModel.loadNowPlaying()
         //viewModel.loadMoviesList(requireContext())
         //viewModel.loadMovieDetails()
@@ -74,7 +70,7 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
         Log.d("REZ-NowPlaying", nowPlaying.toString())
         setMoviesListAdapter(nowPlaying)
     }
-    
+
     private val clickListener = object : OnRecyclerItemMovieClicked {
         override fun onClick(movie: Movie) {
             viewModelMovieDetails.setMovie(movie)

@@ -1,4 +1,4 @@
-package ru.asshands.softwire.androidacademy2020.models
+package ru.asshands.softwire.androidacademy2020.network.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

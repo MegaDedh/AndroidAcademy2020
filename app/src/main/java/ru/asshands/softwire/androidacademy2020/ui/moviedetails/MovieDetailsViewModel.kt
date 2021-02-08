@@ -8,11 +8,11 @@ import kotlinx.coroutines.*
 import ru.asshands.softwire.androidacademy2020.data.Actor
 import ru.asshands.softwire.androidacademy2020.data.Genre
 import ru.asshands.softwire.androidacademy2020.data.Movie
-import ru.asshands.softwire.androidacademy2020.models.Cast
-import ru.asshands.softwire.androidacademy2020.models.MovieCredits
-import ru.asshands.softwire.androidacademy2020.models.MovieDbConfig
-import ru.asshands.softwire.androidacademy2020.models.MovieDetails
-import ru.asshands.softwire.androidacademy2020.services.RetrofitModule
+import ru.asshands.softwire.androidacademy2020.network.models.Cast
+import ru.asshands.softwire.androidacademy2020.network.models.MovieCredits
+import ru.asshands.softwire.androidacademy2020.network.models.MovieDbConfig
+import ru.asshands.softwire.androidacademy2020.network.models.MovieDetails
+import ru.asshands.softwire.androidacademy2020.network.services.RetrofitModule
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -40,7 +40,7 @@ class MovieDetailsViewModel : ViewModel() {
 
     fun setMovie(value: Movie) {
         mutableMovie.value = value
-        movieId = value.id.toInt()
+        movieId = value.movieId.toInt()
     }
 
     fun setMovieDbConfig(value: MovieDbConfig) {
@@ -49,10 +49,15 @@ class MovieDetailsViewModel : ViewModel() {
 
     fun loadMovieDetails() {
         coroutineScope.launch {
+            // TODO логика такая-же как и в MoviesList
+            // TODO пытаемся найти и загрузить Movie из БД по "movieId"
+            // TODO отправляем запрос в сеть
+            // TODO если пришли валидные network-данные - показываем показываем их:
             val movieDetails = loadMovieDetailsRaw()
             val movieCredits = loadMovieCreditsRaw()
             val movieActors = convertCastToActors(movieCredits.cast)
             mutableMovieDetails.value = movieDetails?.let { convertMoviesDetails(it, movieActors) }
+            // TODO добавляем (или перезаписываем) в БД полученый фильм по его "movieId"
         }
     }
 
@@ -70,7 +75,7 @@ class MovieDetailsViewModel : ViewModel() {
 
     private fun convertMoviesDetails(movie: MovieDetails, actor: List<Actor>): Movie {
         return Movie(
-            id = movie.id,
+            movieId = movie.id,
             title = movie.title,
             overview = movie.overview,
             poster = "${mutableMovieDbConfig.value?.images?.secureBaseURL}${

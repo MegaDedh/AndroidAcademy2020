@@ -1,4 +1,4 @@
-package ru.asshands.softwire.androidacademy2020.services
+package ru.asshands.softwire.androidacademy2020.network.services
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json

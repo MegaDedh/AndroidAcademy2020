@@ -1,4 +1,4 @@
-package ru.asshands.softwire.androidacademy2020.adapters
+package ru.asshands.softwire.androidacademy2020.ui.movieslist
 
 import android.content.SharedPreferences
 import android.util.Log
@@ -53,7 +53,7 @@ class MoviesListAdapter(
             val reviewsTemplate = ctx.getString(R.string.reviews, item.numberOfRatings)
             val ageRatingTemplate = ctx.getString(R.string.age_rating, item.minimumAge)
             val runTimeTemplate = ctx.getString(R.string.running_time, item.runtime)
-            var favorite = loadFavorite(item.id.toInt())
+            var favorite = loadFavorite(item.movieId.toInt())
 
             bind.apply {
                 itemMovieTitle.text = item.title
@@ -65,11 +65,11 @@ class MoviesListAdapter(
                 itemFavorite.setOnClickListener {
                     if (favorite) {
                         favorite = false
-                        saveFavorite(item.id.toInt(), favorite)
+                        saveFavorite(item.movieId.toInt(), favorite)
                         itemFavorite.setImageResource(R.drawable.favorite_gray)
                     } else {
                         favorite = true
-                        saveFavorite(item.id.toInt(), favorite)
+                        saveFavorite(item.movieId.toInt(), favorite)
                         itemFavorite.setImageResource(R.drawable.favorite_active)
                     }
                 }

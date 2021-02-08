@@ -10,8 +10,8 @@ import ru.asshands.softwire.androidacademy2020.R
 import ru.asshands.softwire.androidacademy2020.data.Actor
 import ru.asshands.softwire.androidacademy2020.data.Movie
 import ru.asshands.softwire.androidacademy2020.databinding.FragmentMovieDetailsBinding
-import ru.asshands.softwire.androidacademy2020.models.MovieCredits
-import ru.asshands.softwire.androidacademy2020.models.MovieDetails
+import ru.asshands.softwire.androidacademy2020.network.models.MovieCredits
+import ru.asshands.softwire.androidacademy2020.network.models.MovieDetails
 import ru.asshands.softwire.androidacademy2020.utils.loadImage
 
 
@@ -26,7 +26,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         super.onViewCreated(view, savedInstanceState)
         _bind = FragmentMovieDetailsBinding.bind(view)
 
-        //viewModel.moviesList.observe(this.viewLifecycleOwner, this::setUiElements)
         viewModel.movieDetails.observe(this.viewLifecycleOwner, this::setUiElements)
         viewModel.movieCredits.observe(this.viewLifecycleOwner, this::getMovieCredits)
 

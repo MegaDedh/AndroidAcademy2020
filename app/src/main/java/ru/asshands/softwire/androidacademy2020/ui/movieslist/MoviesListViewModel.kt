@@ -5,18 +5,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
-import ru.asshands.softwire.androidacademy2020.data.Actor
 import ru.asshands.softwire.androidacademy2020.data.Genre
 import ru.asshands.softwire.androidacademy2020.data.Movie
-import ru.asshands.softwire.androidacademy2020.models.MovieCredits
-import ru.asshands.softwire.androidacademy2020.models.MovieDbConfig
-import ru.asshands.softwire.androidacademy2020.models.MovieDetails
-import ru.asshands.softwire.androidacademy2020.models.NowPlaying
-import ru.asshands.softwire.androidacademy2020.services.RetrofitModule
+import ru.asshands.softwire.androidacademy2020.network.models.MovieDbConfig
+import ru.asshands.softwire.androidacademy2020.network.models.NowPlaying
+import ru.asshands.softwire.androidacademy2020.persistency.PersistencyRepository
+import ru.asshands.softwire.androidacademy2020.network.services.RetrofitModule
+import ru.asshands.softwire.androidacademy2020.utils.toLog
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class MoviesListViewModel : ViewModel() {
+class MoviesListViewModel(
+    private val persistencyRepository: PersistencyRepository
+) : ViewModel() {
 
     private var genresMap = mapOf<Int, String>()
     private val coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
@@ -28,10 +29,6 @@ class MoviesListViewModel : ViewModel() {
         )
     }
 
-
-//    private val mutableMoviesList = MutableLiveData<List<Movie>>(emptyList())
-//    val moviesList: LiveData<List<Movie>> get() = mutableMoviesList
-
     private val mutableMovieDbConfig = MutableLiveData<MovieDbConfig>()
     val movieDbConfig: LiveData<MovieDbConfig> get() = mutableMovieDbConfig
 
@@ -42,32 +39,61 @@ class MoviesListViewModel : ViewModel() {
     val favoriteMovies: MutableLiveData<Map<Int, Boolean>> get() = mutableFavoriteMovies
 
 
-/*    fun loadMoviesList(ctx: Context) {
-        // загрузка из assets
-        CoroutineScope(Dispatchers.Main).launch {
-            // пока передаём контекст в учебных целях
-            mutableMoviesList.value = loadMovies(ctx)
-        }
-    }*/
-
-    fun loadMovieDbConfig() {
-        coroutineScope.launch {
-            mutableMovieDbConfig.value =
-                RetrofitModule.movieDbApi.getMovieDbConfig()
-        }
-    }
-
     fun loadNowPlaying() {
-        loadGenresMap()
-        if (mutableMovieDbConfig.value == null) loadMovieDbConfig()
 
         coroutineScope.launch {
+            Log.d("XXXX", "Start")
+            mutableNowPlaying.value = dbGetAll()
+            Log.d("XXXX", "dbGetAll")
+            loadMovieDbConfig()
+            Log.d("XXXX", "loadMovieDbConfig")
+            loadGenresMap()
+            Log.d("XXXX", "loadGenresMap")
+
+            if (mutableMovieDbConfig.value == null) loadMovieDbConfig()
             val nowPlaying = loadNowPlayingRaw()
-            mutableNowPlaying.value = convertMoviesList(nowPlaying)
+            val moviesList = convertMoviesList(nowPlaying)
+
+            if (moviesList.isNotEmpty()) {
+                mutableNowPlaying.value = moviesList
+                Log.d("XXXX", "loadNowPlayingRaw and setFreshMovies")
+                dbClearAll()
+                Log.d("XXXX", "dbClearAll")
+                dbAddList(moviesList)
+                Log.d("XXXX", "dbAddList")
+
+                // TODO лучше записывать все когда-либо загруженые фильмы в БД
+                // а в списках Now Playing, Latest, Popular,Top Rated, Upcoming хранить "movieId"
+                // затем получать нужные набор из БД по этому ключу
+            }
         }
     }
+
+    private suspend fun loadMovieDbConfig() {
+        delay(2000) // HardWork
+        mutableMovieDbConfig.value = RetrofitModule.movieDbApi.getMovieDbConfig()
+    }
+
+    private suspend fun dbGetAll(): List<Movie> {
+        delay(2000) // HardWork
+        val movies = persistencyRepository.getAll()
+        toLog("XXX-All", movies)
+        return movies
+    }
+
+    private suspend fun dbAddList(movies: List<Movie>) {
+        delay(2000) // HardWork
+        persistencyRepository.addNew(movies)
+    }
+
+    private suspend fun dbClearAll() {
+        delay(2000) // HardWork
+        persistencyRepository.clearAll()
+    }
+
 
     private suspend fun loadNowPlayingRaw(): NowPlaying {
+        delay(2000) // HardWork
         return suspendCoroutine { continuation ->
             coroutineScope.launch {
                 continuation.resume(RetrofitModule.movieDbApi.getNowPlaying())
@@ -75,11 +101,14 @@ class MoviesListViewModel : ViewModel() {
         }
     }
 
-    private fun loadGenresMap() {
-        coroutineScope.launch {
-            genresMap =
-                RetrofitModule.movieDbApi.getMovieGenres().genres.map { it.id to it.name }.toMap()
-        }
+    private suspend fun loadGenresMap() {
+        delay(2000) // HardWork
+        genresMap = RetrofitModule
+            .movieDbApi
+            .getMovieGenres()
+            .genres
+            .map { it.id to it.name }
+            .toMap()
     }
 
     private fun convertMoviesList(nowPlaying: NowPlaying): List<Movie> {
@@ -88,13 +117,13 @@ class MoviesListViewModel : ViewModel() {
         nowPlaying.results.forEach {
             val genresList = mutableListOf<Genre>()
             it.genreIDS.forEach { id ->
-                val genreValue = genresMap.getValue (id.toInt())
+                val genreValue = genresMap.getValue(id.toInt())
                 genresList.add(Genre(id.toInt(), genreValue))
             }
             moviesList
                 .add(
                     Movie(
-                        id = it.id,
+                        movieId = it.id,
                         title = it.title,
                         overview = it.overview,
                         poster = "${mutableMovieDbConfig.value?.images?.secureBaseURL}${
@@ -108,25 +137,24 @@ class MoviesListViewModel : ViewModel() {
                         minimumAge = if (it.adult) 18 else 0,
                         runtime = 0,
                         genres = genresList,
-                        actors = listOf(Actor(0, "ActorName", "ActorPhoto"))
+                        actors = emptyList()
                     )
                 )
         }
         return moviesList
     }
 
-    //TODO перенести "избранное" из MoviesDetailsActorAdapter
-    fun saveFavorite(movieId: Int, favorite: Boolean) {
-        TODO()
+//    //TODO перенести "избранное" из MoviesDetailsActorAdapter
+//    fun saveFavorite(movieId: Int, favorite: Boolean) {
 //        val ed = sharedPreferences.edit()
 //        ed.putBoolean(movieId.toString(), favorite)
 //        ed.apply()
 //        Log.d("DEBUG-TAG", "id=$movieId favorite=$favorite saved")
-    }
-
-    fun loadFavorite(movieId: Int) {
-        TODO()
+//    }
+//
+//    fun loadFavorite(movieId: Int) {
 //      favoriteMovies.value = mapOf(1 to true)
 //      sharedPreferences.getBoolean(movieId.toString(), false)
-    }
+//    }
+
 }
