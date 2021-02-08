@@ -15,6 +15,9 @@ interface MovieDbApi {
     @GET("movie/now_playing?")
     suspend fun getNowPlaying(): NowPlaying
 
+    @GET("movie/upcoming?")
+    suspend fun getUpcoming(): NowPlaying
+
     @GET("movie/{movie_id}?")
     suspend fun getMovieDetails(@Path("movie_id") movieId: Int): MovieDetails
 

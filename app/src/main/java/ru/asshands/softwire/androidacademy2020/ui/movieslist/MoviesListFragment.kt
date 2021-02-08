@@ -41,11 +41,7 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
 
     override fun onStart() {
         super.onStart()
-        //viewModel.loadMovieDbConfig()
         viewModel.loadNowPlaying()
-        //viewModel.loadMoviesList(requireContext())
-        //viewModel.loadMovieDetails()
-        //viewModel.loadMovieCredits()
     }
 
     override fun onDestroyView() {

@@ -7,7 +7,10 @@ import androidx.work.OneTimeWorkRequest
 class WorkRepository {
 
     private val constraints =
-        Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+        Constraints.Builder().setRequiresCharging(true)
+            .setRequiredNetworkType(NetworkType.UNMETERED).build()
+
+    // setRequiredNetworkType(NetworkType.CONNECTED).build()
     val constrainedRequest = OneTimeWorkRequest.Builder(MovieWorker::class.java)
         .setConstraints(constraints)
         .build()
